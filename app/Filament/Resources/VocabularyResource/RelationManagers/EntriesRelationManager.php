@@ -124,6 +124,15 @@ class VocabularyEntriesRelationManager extends RelationManager
                         )
                     )
                     ->sortable(),
+                TextColumn::make('available_locales')
+                    ->label('Locales')
+                    ->getStateUsing(function (VocabularyEntry $record) {
+                        if ($record->entry_labels && is_array($record->entry_labels) && count($record->entry_labels) > 0) {
+                            return implode(', ', array_keys($record->entry_labels));
+                        }
+                        return '[N/A]';
+                    })
+                    ->sortable(false),
                 TextColumn::make('entry_value')->label('Slug'),
             ])
             ->defaultSort('rank')
