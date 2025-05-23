@@ -115,6 +115,15 @@ class VocabularyEntryResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('all_locales_list') // New name, moved to the beginning
+                    ->label('Locales Available') // Changed label slightly for clarity
+                    ->getStateUsing(function (VocabularyEntry $record) {
+                        if ($record->entry_labels && is_array($record->entry_labels) && count($record->entry_labels) > 0) {
+                            return implode(', ', array_keys($record->entry_labels));
+                        }
+                        return '[N/A]';
+                    })
+                    ->sortable(false),
                 TextColumn::make('rank')->label('Ordre')->sortable(),
                 TextColumn::make('entry_labels.fr')
                     ->label('Libellé')
