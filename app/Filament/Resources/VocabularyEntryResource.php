@@ -123,7 +123,12 @@ class VocabularyEntryResource extends Resource
                         . ($entry->entry_labels['fr'] ?? '[sans label]')
                     )
                     ->sortable(),
-                TextColumn::make('entry_value')->label('Slug'),
+                TextColumn::make('locales')
+                    ->label('Locale')
+                    ->formatStateUsing(fn (VocabularyEntry $entry) =>
+                        implode(', ', array_keys($entry->entry_labels))
+                    ),
+                //TextColumn::make('entry_value')->label('Slug'),
             ])
             ->defaultSort('rank')
             ->reorderable('rank')
